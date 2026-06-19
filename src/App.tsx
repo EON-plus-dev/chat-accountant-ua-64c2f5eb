@@ -337,6 +337,7 @@ import {
 } from "./portal/pages/dovidnyky/redirects";
 
 const queryClient = new QueryClient();
+const routerBasename = import.meta.env.BASE_URL;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -344,7 +345,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename={routerBasename}>
           <AudienceProvider>
           <ScrollToTopOnNavigate />
           <NetworkBridge />
