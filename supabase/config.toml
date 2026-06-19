@@ -1,0 +1,49 @@
+project_id = "zfpinzzufujjrxvuaqdc"
+
+[functions.timeline-ai-summary]
+verify_jwt = false
+
+[functions.send-team-invite]
+verify_jwt = false
+
+[functions.send-team-notification]
+verify_jwt = false
+
+[functions.send-email-verification]
+verify_jwt = false
+
+[functions.verify-email-change]
+verify_jwt = false
+
+[functions.generate-backup-codes]
+verify_jwt = false
+
+[functions.delete-account]
+verify_jwt = false
+
+[functions.analytics-ai-comment]
+verify_jwt = false
+
+[functions.roi-advice]
+verify_jwt = false
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.portal-chat]
+verify_jwt = false
+
+[functions.analytics-stats]
+verify_jwt = false
+
+[functions.generate-seo]
+verify_jwt = false
+
+[functions.generate-article]
+verify_jwt = false
+
+[functions.verify-article]
+verify_jwt = false
+
+[functions.send-reminders]
+verify_jwt = false

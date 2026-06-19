@@ -1,0 +1,2087 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   UNIFIED SCROLLBAR SYSTEM
+   Variants: default (6px), thin (4px), hidden, auto-hide
+   ============================================ */
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Default scrollbar - 6px, semi-transparent with hover */
+.scrollbar-default::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-default::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-default::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.2);
+  border-radius: 9999px;
+  transition: background 200ms;
+}
+.scrollbar-default::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground) / 0.4);
+}
+
+/* Thin scrollbar - 4px */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.15);
+  border-radius: 9999px;
+  transition: background 200ms;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground) / 0.3);
+}
+
+/* Firefox support for all variants */
+.scrollbar-default, .scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--foreground) / 0.2) transparent;
+}
+
+/* iOS Safari mobile scroll support */
+@media (max-width: 767px) {
+  .overflow-y-auto,
+  .overflow-auto {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+/* ============================================
+   ROW HIGHLIGHT HOVER EFFECT
+   Increases border brightness on hover
+   ============================================ */
+.row-highlight-hover {
+  transition: all 150ms ease;
+}
+.row-highlight-hover:hover {
+  filter: brightness(1.02);
+}
+.row-highlight-hover.border-l-emerald-500:hover {
+  border-left-color: rgb(5 150 105); /* emerald-600 */
+  box-shadow: inset 4px 0 8px -4px rgb(16 185 129 / 0.3);
+}
+.row-highlight-hover.border-l-amber-500:hover {
+  border-left-color: rgb(217 119 6); /* amber-600 */
+  box-shadow: inset 4px 0 8px -4px rgb(245 158 11 / 0.3);
+}
+.row-highlight-hover.border-l-blue-500:hover {
+  border-left-color: rgb(37 99 235); /* blue-600 */
+  box-shadow: inset 4px 0 8px -4px rgb(59 130 246 / 0.3);
+}
+.row-highlight-hover.border-l-red-500:hover {
+  border-left-color: rgb(220 38 38); /* red-600 */
+  box-shadow: inset 4px 0 8px -4px rgb(239 68 68 / 0.3);
+}
+
+/* ============================================
+   SECTION HIGHLIGHT ANIMATION
+   For document section scroll navigation
+   ============================================ */
+@keyframes section-highlight-pulse {
+  0%, 100% { 
+    background-color: transparent; 
+  }
+  25%, 75% { 
+    background-color: hsl(var(--primary) / 0.15); 
+  }
+}
+
+.section-highlight {
+  animation: section-highlight-pulse 2s ease-out;
+  border-radius: 4px;
+}
+
+/* ============================================
+   NAVIGATION HIGHLIGHT ANIMATION
+   For section scroll-to with visual feedback
+   ============================================ */
+@keyframes highlight-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0); }
+  50% { box-shadow: 0 0 0 8px hsl(var(--primary) / 0.15); }
+}
+
+.highlight-section {
+  animation: highlight-pulse 0.6s ease-in-out 3;
+  border-radius: 0.75rem;
+}
+
+/* Fragment highlighting for comments/discrepancies */
+.fragment-comment {
+  background: hsl(var(--primary) / 0.08);
+  border-bottom: 2px dashed hsl(var(--primary) / 0.4);
+  position: relative;
+}
+
+.fragment-discrepancy {
+  background: hsl(var(--warning) / 0.1);
+  border-left: 3px solid hsl(var(--warning));
+  padding-left: 4px;
+}
+
+.fragment-risk {
+  background: hsl(var(--destructive) / 0.08);
+  border-bottom: 2px solid hsl(var(--destructive) / 0.3);
+}
+
+/* ============================================
+   AI HIGHLIGHT SYSTEM
+   For document text highlighting based on AI card status
+   ============================================ */
+
+/* Ensure all AI highlights are clickable */
+[data-card-id] {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* AI Approved - emerald */
+.ai-highlight-approved {
+  background: linear-gradient(
+    to bottom,
+    hsl(142 76% 36% / 0.12) 0%,
+    hsl(142 76% 36% / 0.22) 100%
+  );
+  border-bottom: 2px solid hsl(142 76% 36%);
+  border-radius: 2px;
+  padding: 0 2px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+
+/* AI Needs Review - amber */
+.ai-highlight-review {
+  background: linear-gradient(
+    to bottom,
+    hsl(38 92% 50% / 0.12) 0%,
+    hsl(38 92% 50% / 0.22) 100%
+  );
+  border-bottom: 2px solid hsl(38 92% 50%);
+  border-radius: 2px;
+  padding: 0 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* AI Accepted by user - solid emerald */
+.ai-highlight-accepted {
+  background: hsl(142 76% 36% / 0.3);
+  border-bottom: 2px solid hsl(142 76% 36%);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* AI Dismissed by user - muted, dashed */
+.ai-highlight-dismissed {
+  background: hsl(var(--muted-foreground) / 0.1);
+  border-bottom: 1px dashed hsl(var(--muted-foreground) / 0.4);
+  border-radius: 2px;
+  padding: 0 2px;
+  opacity: 0.6;
+}
+
+/* Active/Hover state - pulsing animation */
+.ai-highlight-active {
+  animation: ai-highlight-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
+}
+
+@keyframes ai-highlight-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.row-highlight-hover.border-l-sky-500:hover {
+  border-left-color: rgb(2 132 199); /* sky-600 */
+  box-shadow: inset 4px 0 8px -4px rgb(14 165 233 / 0.3);
+}
+.row-highlight-hover.border-l-yellow-500:hover {
+  border-left-color: rgb(202 138 4); /* yellow-600 */
+  box-shadow: inset 4px 0 8px -4px rgb(234 179 8 / 0.3);
+}
+.row-highlight-hover.border-l-slate-400:hover {
+  border-left-color: rgb(100 116 139); /* slate-500 */
+  box-shadow: inset 4px 0 8px -4px rgb(148 163 184 / 0.3);
+}
+
+@layer base {
+  :root {
+    /* ============================================
+       TYPOGRAPHY SCALE (FinTech 2024)
+       ============================================ */
+    --text-h1: 1.625rem;           /* 26px - page titles */
+    --text-h2: 1.25rem;            /* 20px - section titles */
+    --text-h3: 1rem;               /* 16px - card titles */
+    --text-body: 0.9375rem;        /* 15px - body text */
+    --text-caption: 0.8125rem;     /* 13px - helper text */
+    --text-kpi-number: 1.75rem;    /* 28px - KPI numbers desktop */
+    --text-table-header: 0.75rem; /* 12px - table headers (improved contrast) */
+    --text-table-cell: 0.875rem;   /* 14px - table content */
+    --text-badge-sm: 0.6875rem;    /* 11px - small badges (improved readability) */
+    
+    /* Line heights */
+    --leading-tight: 1.25;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+
+    /* ============================================
+       COLOR TOKENS
+       ============================================ */
+    --background: 210 40% 98%;
+    --foreground: 221 39% 11%;
+    
+    /* Nav Shelf - darker background for inactive tabs area */
+    --nav-shelf: 215 20% 87%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 221 39% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 221 39% 11%;
+
+    --primary: 221 83% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 32% 91%;
+    --secondary-foreground: 221 39% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 20% 40%; /* Improved contrast: ~5.5:1 for WCAG AA */
+    
+    /* Subtab shelf - Level 2 navigation background */
+    --subtab-shelf: 215 20% 94.5%;
+
+    --accent: 221 83% 97%;
+    --accent-foreground: 221 39% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 40%;
+    
+    /* 
+     * Border Opacity Standards (use Tailwind opacity modifiers):
+     * - border-border/50  = subtle (decorative, containers, pill tabs)
+     * - border-border/70  = default (tables, cards, inputs)
+     * - border-border     = strong (focus states, active elements)
+     */
+
+    --radius: 0.75rem;
+
+    --chat-bg: 215 22% 96%;
+    --chat-message: 221 39% 11%;
+    --chat-action-bg: 0 0% 100%;
+    --chat-action-border: 220 40% 85%;
+    --chat-action-hover: 220 40% 95%;
+    --chat-bubble-ai: 0 0% 100%;
+    --chat-bubble-ai-foreground: 221 39% 11%;
+    --chat-bubble-user: 221 25% 92%;
+    --chat-bubble-user-foreground: 221 39% 11%;
+    --chat-header-bg: 221 83% 40%;
+    --chat-header-foreground: 0 0% 100%;
+    --workspace-bg: 215 18% 93%;
+    
+    /* FinTech Shadow System */
+    --shadow-xs: 0 1px 2px hsl(221 83% 40% / 0.04);
+    --shadow-sm: 0 2px 4px hsl(221 83% 40% / 0.06);
+    --shadow-md: 0 4px 8px hsl(221 83% 40% / 0.08);
+    --shadow-lg: 0 8px 16px hsl(221 83% 40% / 0.10);
+    --shadow-xl: 0 12px 24px hsl(221 83% 40% / 0.12);
+    
+    /* Sidebar colors for control layer (Chat, CabinetHeader) */
+    --sidebar: 215 22% 96%;
+    
+    /* Elevated card shadow (all sides uniform) */
+    --shadow-card-elevated: 
+      0 6px 16px hsl(221 83% 40% / 0.12),
+      0 2px 6px hsl(221 83% 40% / 0.08),
+      0 0 0 1px hsl(220 20% 88% / 0.6);
+    --sidebar-foreground: 221 39% 11%;
+    --sidebar-accent: 220 25% 95%;
+    --sidebar-accent-foreground: 221 39% 11%;
+    --sidebar-border: 220 15% 92%;
+    --sidebar-ring: 221 83% 40%;
+    
+    --success: 142 76% 36%;
+    --success-foreground: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 92% 50%;
+    --info: 217 91% 60%;
+    --info-foreground: 217 91% 60%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(221, 83%, 40%), hsl(217, 91%, 60%));
+    --shadow-soft: 0 2px 8px -2px hsl(221 83% 40% / 0.08);
+    --shadow-card: 0 4px 16px -4px hsl(221 83% 40% / 0.1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Chart colors for recharts */
+    --chart-1: 221 83% 53%;
+    --chart-2: 200 70% 50%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 55%;
+    --chart-5: 195 75% 45%;
+
+    /* Event channel tokens (individual cabinet "Мої події") */
+    --channel-tax: 14 88% 50%;
+    --channel-payment: 142 70% 38%;
+    --channel-document: 217 88% 55%;
+    --channel-booking: 280 70% 55%;
+    --channel-subscription: 25 88% 50%;
+    --channel-investment: 195 85% 42%;
+    --channel-property: 35 78% 45%;
+    --channel-family: 340 78% 55%;
+    --channel-ai-action: 265 85% 60%;
+    --channel-system: 220 10% 45%;
+  }
+
+  /* Mobile typography overrides */
+  @media (max-width: 768px) {
+    :root {
+      --text-h1: 1.375rem;         /* 22px */
+      --text-h2: 1.125rem;         /* 18px */
+      --text-h3: 1rem;             /* 16px */
+      --text-kpi-number: 1.5rem;   /* 24px */
+    }
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    
+    /* Nav Shelf - darker for contrast in dark mode */
+    --nav-shelf: 222 35% 5%;
+
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 13%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 70%; /* Bumped from 65% for better contrast on captions */
+    
+    /* Subtab shelf - Level 2 navigation background */
+    --subtab-shelf: 222 32% 9%;
+
+    --accent: 217 33% 20%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 33% 22%;
+    --input: 217 33% 22%;
+    --ring: 221 83% 53%;
+
+    --chat-bg: 222 40% 8%;
+    --chat-message: 210 40% 98%;
+    --chat-action-bg: 222 47% 13%;
+    --chat-action-border: 217 33% 25%;
+    --chat-action-hover: 217 33% 20%;
+    --chat-bubble-ai: 217 33% 17%;
+    --chat-bubble-ai-foreground: 210 40% 98%;
+    --chat-bubble-user: 221 30% 22%;
+    --chat-bubble-user-foreground: 210 40% 98%;
+    --chat-header-bg: 221 83% 35%;
+    --chat-header-foreground: 0 0% 100%;
+    --workspace-bg: 222 32% 10%;
+    
+    /* FinTech Shadow System - Dark */
+    --shadow-xs: 0 1px 2px hsl(0 0% 0% / 0.15);
+    --shadow-sm: 0 2px 4px hsl(0 0% 0% / 0.20);
+    --shadow-md: 0 4px 8px hsl(0 0% 0% / 0.25);
+    --shadow-lg: 0 8px 16px hsl(0 0% 0% / 0.30);
+    --shadow-xl: 0 12px 24px hsl(0 0% 0% / 0.35);
+
+    /* Sidebar colors for control layer (Chat, CabinetHeader) */
+    --sidebar: 222 40% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-accent: 217 33% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 18%;
+    --sidebar-ring: 221 83% 53%;
+
+    --success: 142 76% 42%;
+    --success-foreground: 142 69% 58%;
+    --warning: 38 92% 55%;
+    --warning-foreground: 38 92% 50%;
+    --info: 217 91% 75%;
+    --info-foreground: 217 91% 75%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(221, 83%, 45%), hsl(217, 91%, 55%));
+    --shadow-soft: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 4px 16px -4px hsl(0 0% 0% / 0.4);
+    
+    /* Elevated card shadow for workspace - stronger in dark mode */
+    --shadow-card-elevated: 
+      0 8px 24px hsl(0 0% 0% / 0.5),
+      0 3px 8px hsl(0 0% 0% / 0.4),
+      0 0 0 1px hsl(217 33% 30% / 0.7);
+
+    --chart-1: 221 83% 60%;
+    --chart-2: 200 70% 55%;
+    --chart-3: 30 80% 60%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 195 75% 50%;
+
+    /* Event channel tokens — dark variants (slightly brighter) */
+    --channel-tax: 14 90% 62%;
+    --channel-payment: 142 65% 52%;
+    --channel-document: 217 90% 68%;
+    --channel-booking: 280 75% 68%;
+    --channel-subscription: 25 90% 60%;
+    --channel-investment: 195 85% 58%;
+    --channel-property: 35 85% 60%;
+    --channel-family: 340 82% 68%;
+    --channel-ai-action: 265 88% 72%;
+    --channel-system: 220 12% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    overflow-x: clip;
+    scrollbar-gutter: stable;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (max-width: 1024px) {
+    html {
+      scroll-padding-top: 4rem;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: clip;
+    font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+  }
+
+  /* Typography hierarchy */
+  h1 {
+    font-size: var(--text-h1);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+  
+  h2 {
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+  
+  h3 {
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: var(--leading-normal);
+  }
+
+  h4, h5, h6 {
+    font-weight: 600;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  
+  /* KPI Number styles */
+  .text-kpi-number {
+    font-size: var(--text-kpi-number);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Table typography */
+  .text-table-header {
+    font-size: var(--text-table-header);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .text-table-cell {
+    font-size: var(--text-table-cell);
+    line-height: var(--leading-normal);
+  }
+
+  /* ============================================
+     PROSE TABLE STYLES
+     For Markdown tables in consultation articles
+     ============================================ */
+  .prose .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid hsl(var(--border));
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-table-cell);
+    line-height: var(--leading-normal);
+  }
+
+  .prose thead th {
+    background: hsl(var(--muted));
+    font-weight: 600;
+    font-size: var(--text-table-header);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.625rem 0.75rem;
+    text-align: left;
+    border-bottom: 2px solid hsl(var(--border));
+    white-space: nowrap;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .prose tbody td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.5);
+    vertical-align: top;
+  }
+
+  .prose tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .prose tbody tr:hover {
+    background: hsl(var(--muted) / 0.4);
+  }
+
+  .prose tbody tr:nth-child(even) {
+    background: hsl(var(--muted) / 0.25);
+  }
+
+
+  /* ============================================
+     CONSULTATION SEMANTIC BLOCKS
+     :::intro, :::warning, :::instruction, :::legal, :::error, :::conclusion
+     ============================================ */
+  .consultation-block {
+    padding: 18px 20px;
+    border-radius: 6px;
+    margin: 24px 0;
+    border-left: 4px solid transparent;
+  }
+
+  .consultation-block p:last-child,
+  .consultation-block ol:last-child,
+  .consultation-block ul:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Intro / Conclusion — blue */
+  .consultation-block--intro,
+  .consultation-block--conclusion {
+    background: hsl(217 91% 60% / 0.08);
+    border-left-color: hsl(217 91% 60%);
+  }
+
+  /* Warning — amber */
+  .consultation-block--warning {
+    background: hsl(38 92% 50% / 0.08);
+    border-left-color: hsl(38 92% 50%);
+  }
+
+  /* Instruction — green */
+  .consultation-block--instruction {
+    background: hsl(142 76% 36% / 0.08);
+    border-left-color: hsl(142 76% 36%);
+  }
+
+  /* Legal — slate */
+  .consultation-block--legal {
+    background: hsl(var(--muted) / 0.5);
+    border-left-color: hsl(215 14% 50%);
+    font-size: 14px;
+  }
+
+  /* Error — red */
+  .consultation-block--error {
+    background: hsl(0 84% 60% / 0.06);
+    border-left-color: hsl(0 84% 60%);
+  }
+
+  /* Checklist — green with checkmark icons */
+  .consultation-block--checklist {
+    background: hsl(142 76% 36% / 0.05);
+    border-left-color: hsl(142 76% 36%);
+    padding: 20px 24px;
+  }
+
+  .consultation-block--checklist .checklist-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0 0;
+    position: relative;
+  }
+
+  .consultation-block--checklist .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    position: relative;
+    padding-left: 4px;
+  }
+
+  .consultation-block--checklist .checklist-item:not(.checklist-item--last)::after {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 38px;
+    bottom: -2px;
+    width: 2px;
+    background: hsl(142 76% 36% / 0.25);
+  }
+
+  .consultation-block--checklist .checklist-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 50%;
+    background: hsl(142 76% 36%);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .consultation-block--checklist .checklist-text {
+    flex: 1;
+    padding-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* Dark mode adjustments */
+  .dark .consultation-block--intro,
+  .dark .consultation-block--conclusion {
+    background: hsl(217 91% 60% / 0.12);
+  }
+
+  .dark .consultation-block--warning {
+    background: hsl(38 92% 50% / 0.12);
+  }
+
+  .dark .consultation-block--instruction {
+    background: hsl(142 76% 36% / 0.12);
+  }
+
+  .dark .consultation-block--error {
+    background: hsl(0 84% 60% / 0.1);
+  }
+
+  .dark .consultation-block--checklist {
+    background: hsl(142 76% 36% / 0.1);
+  }
+  
+  /* Caption text */
+  .text-caption {
+    font-size: var(--text-caption);
+    line-height: var(--leading-normal);
+  }
+
+  /* Mode toggle safe area support */
+  .mode-toggle-container {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+  }
+
+  /* Mode indicator sliding animation */
+  .mode-indicator {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Unified content transition animation for all tab/mode switches */
+  .animate-content-enter {
+    animation: contentEnter 0.2s ease-out;
+  }
+
+  @keyframes contentEnter {
+    from { 
+      opacity: 0; 
+    }
+    to { 
+      opacity: 1; 
+    }
+  }
+
+  /* Accessibility: respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-content-enter {
+      animation: none !important;
+    }
+  }
+
+  /* Safe area utilities with fallbacks for iPhone X+ */
+  .pb-safe {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .pt-safe {
+    padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+  }
+
+  .pr-safe {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .pl-safe {
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+  
+  /* Combined safe area + fixed padding for mobile footers */
+  .pb-safe-footer {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 5rem);
+  }
+
+  /* Touch-friendly utilities - WCAG AAA 44px minimum */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .touch-target-compact {
+    @apply min-h-[36px] min-w-[36px];
+  }
+  
+  /* Unified icon button styling */
+  .btn-icon-unified {
+    @apply min-h-[40px] min-w-[40px] h-auto w-auto rounded-lg;
+  }
+}
+
+/* Font import moved to top of file */
+
+@layer utilities {
+  /* Hide scrollbar across browsers (used by horizontally scrollable strips) */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Fade mask utilities for horizontal scroll (dark mode optimized) */
+  .fade-mask-left {
+    mask-image: linear-gradient(to right, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%);
+  }
+
+  .fade-mask-right {
+    mask-image: linear-gradient(to left, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 0%, transparent 100%);
+  }
+
+  /* FinTech-optimized typography scale for Ukrainian text */
+  
+  /* Фінансові суми - критична інформація */
+  .text-amount {
+    @apply tabular-nums tracking-tight font-semibold;
+  }
+  
+  .text-amount-sm {
+    @apply text-sm tabular-nums tracking-tight font-medium;
+  }
+  
+  .text-amount-lg {
+    @apply text-lg sm:text-xl md:text-2xl tabular-nums tracking-tight font-semibold;
+  }
+  
+  /* Мітки та заголовки - мінімум 14px на мобільних для критичної інформації */
+  .text-label-sm {
+    @apply text-xs sm:text-sm font-medium leading-tight;
+  }
+  
+  /* Допоміжний текст - підвищений для мобільних */
+  .text-secondary {
+    @apply text-xs sm:text-sm text-muted-foreground;
+  }
+  
+  /* Критичні дедлайни */
+  .text-deadline {
+    @apply text-xs sm:text-sm font-medium leading-snug;
+  }
+}
+
+/* Shimmer animation for skeleton loading - gradient sweep effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Field highlight pulse animation for document text */
+@keyframes fieldHighlightPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.5);
+  }
+}
+
+.field-highlight-pulse {
+  animation: fieldHighlightPulse 1.5s ease-in-out infinite;
+}
+
+.shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.08) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+}
+
+.shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   DOCUMENT SECTION HIGHLIGHT ANIMATION
+   For chat-driven navigation to blocks
+   ============================================ */
+@keyframes section-highlight-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 6px hsl(var(--primary) / 0.15);
+  }
+}
+
+[data-section].highlight-active {
+  animation: section-highlight-pulse 1s ease-in-out 3;
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* ============================================
+   DOCUMENT HTML PREVIEW STYLES
+   Realistic Ukrainian document visualization
+   ============================================ */
+.document-html-preview {
+  background: white;
+  color: #1a1a1a;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark .document-html-preview {
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   TIPTAP WYSIWYG EDITOR STYLES
+   ============================================ */
+.tiptap-editor .ProseMirror {
+  min-height: 100%;
+  outline: none;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+/* AI Highlight styles for text in editor */
+
+/* ============================================
+   ANCHOR CARD DOCUMENT FIELD HIGHLIGHTING
+   For live preview in document creation
+   ============================================ */
+
+/* Filled field - emerald highlight */
+[data-field-status="filled"] {
+  background: linear-gradient(
+    to bottom,
+    hsl(142 76% 36% / 0.08) 0%,
+    hsl(142 76% 36% / 0.15) 100%
+  );
+  border-bottom: 2px solid hsl(142 76% 36% / 0.6);
+  padding: 0 4px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+[data-field-status="filled"]:hover {
+  background: hsl(142 76% 36% / 0.2);
+}
+
+/* Empty field - amber highlight */
+[data-field-status="empty"] {
+  background: linear-gradient(
+    to bottom,
+    hsl(38 92% 50% / 0.1) 0%,
+    hsl(38 92% 50% / 0.2) 100%
+  );
+  border-bottom: 2px dashed hsl(38 92% 50% / 0.7);
+  padding: 0 4px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+[data-field-status="empty"]:hover {
+  background: hsl(38 92% 50% / 0.25);
+}
+
+/* Highlight pulse animation for field click sync */
+.highlight-pulse {
+  animation: highlight-pulse-anim 0.6s ease-out 2;
+}
+
+@keyframes highlight-pulse-anim {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 6px hsl(var(--primary) / 0.2);
+    background: hsl(var(--primary) / 0.15);
+  }
+}
+
+/* Dark mode adjustments for field highlighting */
+.dark [data-field-status="filled"] {
+  background: linear-gradient(
+    to bottom,
+    hsl(142 76% 42% / 0.12) 0%,
+    hsl(142 76% 42% / 0.2) 100%
+  );
+  border-bottom-color: hsl(142 76% 42% / 0.7);
+}
+
+.dark [data-field-status="empty"] {
+  background: linear-gradient(
+    to bottom,
+    hsl(38 92% 55% / 0.12) 0%,
+    hsl(38 92% 55% / 0.2) 100%
+  );
+  border-bottom-color: hsl(38 92% 55% / 0.7);
+}
+.ai-highlight-approved {
+  background: hsl(142 76% 80% / 0.4);
+  border-radius: 2px;
+  padding: 1px 2px;
+  scroll-margin-top: 24px;
+}
+
+.ai-highlight-needs_review {
+  background: hsl(45 93% 70% / 0.5);
+  border-radius: 2px;
+  padding: 1px 2px;
+  scroll-margin-top: 24px;
+}
+
+.ai-highlight-accepted {
+  background: hsl(142 76% 70% / 0.5);
+  border-radius: 2px;
+  padding: 1px 2px;
+  scroll-margin-top: 24px;
+}
+
+.ai-highlight-dismissed {
+  background: hsl(var(--muted) / 0.5);
+  border-radius: 2px;
+  padding: 1px 2px;
+  opacity: 0.6;
+  scroll-margin-top: 24px;
+}
+
+.ai-highlight-active {
+  animation: ai-highlight-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.4);
+}
+
+@keyframes ai-highlight-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 5px hsl(var(--primary) / 0.5);
+  }
+}
+
+/* Clickable highlights cursor */
+[data-card-id] {
+  cursor: pointer !important;
+}
+
+.ai-highlight-approved,
+.ai-highlight-review,
+.ai-highlight-accepted,
+.ai-highlight-dismissed {
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-highlight-approved:hover,
+.ai-highlight-review:hover,
+.ai-highlight-accepted:hover,
+.ai-highlight-dismissed:hover {
+  filter: brightness(0.92);
+}
+
+/* Highlight pulse animation for scroll-to-text feedback */
+@keyframes highlight-pulse {
+  0% {
+    box-shadow: 0 0 0 0 hsl(45 93% 50% / 0.7);
+    background-color: hsl(45 93% 70% / 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 6px hsl(45 93% 50% / 0.4);
+    background-color: hsl(45 93% 65% / 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 0 hsl(45 93% 50% / 0);
+    background-color: inherit;
+  }
+}
+
+.dark .ai-highlight-approved {
+  background: hsl(142 50% 30% / 0.5);
+}
+
+.dark .ai-highlight-needs_review {
+  background: hsl(45 70% 35% / 0.5);
+}
+
+.dark .ai-highlight-accepted {
+  background: hsl(142 50% 25% / 0.6);
+}
+
+.dark .ai-highlight-dismissed {
+  background: hsl(var(--muted) / 0.4);
+}
+
+.tiptap-editor .ProseMirror p {
+  margin: 0.5rem 0;
+}
+
+.tiptap-editor .ProseMirror h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+}
+
+.tiptap-editor .ProseMirror h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.tiptap-editor .ProseMirror h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.tiptap-editor .ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.tiptap-editor .ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.tiptap-editor .ProseMirror li {
+  margin: 0.25rem 0;
+}
+
+.tiptap-editor .ProseMirror blockquote {
+  border-left: 3px solid hsl(var(--primary) / 0.3);
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+.tiptap-editor .ProseMirror table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.75rem 0;
+}
+
+.tiptap-editor .ProseMirror td,
+.tiptap-editor .ProseMirror th {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem;
+  text-align: left;
+  min-width: 60px;
+}
+
+.tiptap-editor .ProseMirror th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+}
+
+.tiptap-editor .ProseMirror mark {
+  background: hsl(48 100% 70%);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.dark .tiptap-editor .ProseMirror mark {
+  background: hsl(48 80% 30%);
+}
+
+.tiptap-editor .ProseMirror code {
+  background: hsl(var(--muted));
+  padding: 0.125rem 0.25rem;
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875em;
+}
+
+.tiptap-editor .ProseMirror pre {
+  background: hsl(var(--muted));
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.tiptap-editor .ProseMirror pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Text alignment */
+.tiptap-editor .ProseMirror [style*="text-align: center"] {
+  text-align: center;
+}
+
+.tiptap-editor .ProseMirror [style*="text-align: right"] {
+  text-align: right;
+}
+
+.tiptap-editor .ProseMirror [style*="text-align: justify"] {
+  text-align: justify;
+}
+
+/* Selected table cell */
+.tiptap-editor .ProseMirror .selectedCell {
+  background: hsl(var(--primary) / 0.1);
+}
+
+/* Placeholder */
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+/* ============================================
+   PRINT STYLES
+   Hide interactive elements when printing documents
+   ============================================ */
+
+@media print {
+  /* Hide document toolbars */
+  [data-section="document-toolbar"],
+  [data-section="rich-text-toolbar"] {
+    display: none !important;
+  }
+  
+  /* Hide AI card strip */
+  [data-ai-card-strip-viewport],
+  [data-ai-card-strip-viewport] * {
+    display: none !important;
+  }
+  
+  /* Hide side panel with comments/structure */
+  [data-section="document-side-panel"] {
+    display: none !important;
+  }
+  
+  /* Hide all buttons and interactive controls */
+  button,
+  [role="button"] {
+    display: none !important;
+  }
+  
+  /* Reset zoom for print (always 100%) */
+  .tiptap-editor,
+  .tiptap-editor .ProseMirror {
+    transform: none !important;
+    zoom: 1 !important;
+  }
+  
+  /* Ensure document content uses full width */
+  .tiptap-editor {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Clean typography for print */
+  .tiptap-editor .ProseMirror {
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    color: black !important;
+    background: white !important;
+  }
+  
+  /* Remove all highlights and marks for clean print */
+  .tiptap-editor .ProseMirror mark,
+  [data-field-highlight],
+  [data-search-match],
+  .ai-highlight-active,
+  .section-highlight {
+    background: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+  
+  /* Hide scroll areas decorations */
+  .scrollbar-hide,
+  .scrollbar-thin,
+  .scrollbar-default {
+    overflow: visible !important;
+  }
+  
+  /* Page break handling */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+  
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  table {
+    page-break-inside: avoid;
+  }
+  
+  /* Hide fade masks */
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   INLINE EDITABLE FIELDS (Document Preview)
+   For Quick Edit functionality on non-obligatory fields
+   ============================================ */
+
+/* Base editable field indicator */
+[data-editable="true"] {
+  cursor: text;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+[data-editable="true"]:hover {
+  background-color: hsl(var(--primary) / 0.08);
+  border-radius: 4px;
+  outline: 1px dashed hsl(var(--primary) / 0.4);
+  outline-offset: 2px;
+}
+
+/* Editable field with empty value - prompt to click */
+[data-editable="true"][data-field-status="empty"] {
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+[data-editable="true"][data-field-status="empty"]:hover {
+  background-color: hsl(var(--warning) / 0.1);
+  outline-color: hsl(var(--warning) / 0.5);
+}
+
+/* Inline field editor container */
+.inline-field-editor {
+  animation: inline-editor-appear 0.15s ease-out;
+}
+
+@keyframes inline-editor-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   CLICKABLE FIELDS IN DOCUMENT LIVE PREVIEW
+   For bidirectional sync (Text → Card navigation)
+   ============================================ */
+[data-field-key][data-clickable="true"] {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+[data-field-key][data-clickable="true"]:hover {
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 2px;
+}
+
+/* Dark mode hover */
+.dark [data-field-key][data-clickable="true"]:hover {
+  background-color: hsl(var(--primary) / 0.15);
+}
+
+
+/* ============================================
+   HERO GRADIENT BACKGROUND — Mesh Gradient
+   ============================================ */
+@keyframes mesh-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-20px, 15px) scale(0.97); }
+  75% { transform: translate(15px, 25px) scale(1.03); }
+}
+
+@keyframes mesh-drift-alt {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-25px, 20px) scale(1.04); }
+  50% { transform: translate(20px, -15px) scale(0.96); }
+  75% { transform: translate(-10px, -25px) scale(1.02); }
+}
+
+.hero-gradient-bg {
+  position: relative;
+  overflow-x: clip;
+}
+
+/* Noise texture overlay */
+.hero-gradient-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* Mesh gradient blobs container */
+.hero-gradient-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, hsl(var(--primary) / 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 25%, hsl(217 91% 60% / 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 45% at 50% 80%, hsl(var(--accent) / 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 55% at 70% 60%, hsl(142 71% 45% / 0.03) 0%, transparent 70%);
+  animation: mesh-drift 60s ease-in-out infinite;
+}
+
+/* Additional floating blob for depth */
+.hero-gradient-bg > .hero-mesh-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  top: -100px;
+  right: -50px;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 60%);
+  filter: blur(60px);
+  animation: mesh-drift-alt 45s ease-in-out infinite;
+}
+
+/* Dark theme: boost opacity */
+.dark .hero-gradient-bg::after {
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, hsl(var(--primary) / 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 25%, hsl(217 91% 60% / 0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 45% at 50% 80%, hsl(var(--accent) / 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 55% at 70% 60%, hsl(142 71% 45% / 0.05) 0%, transparent 70%);
+}
+
+.dark .hero-gradient-bg::before {
+  opacity: 0.15;
+}
+
+.dark .hero-gradient-bg > .hero-mesh-blob {
+  background: radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 60%);
+}
+
+/* Marquee animation for partner logos */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================================
+   KVED ARTICLE — Whitepaper Layout
+   Scoped under .kved-article
+   ============================================ */
+.kved-article {
+  /* Aligned to project HSL design tokens */
+  --kved-ink: hsl(var(--foreground));                /* 221 39% 11% */
+  --kved-ink-light: hsl(var(--muted-foreground));    /* 215 20% 40% */
+  --kved-accent: hsl(var(--primary));                /* 221 83% 40% */
+  --kved-accent-dark: hsl(221, 83%, 33%);            /* darker primary shade */
+  --kved-accent-bg: hsl(var(--accent));              /* 221 83% 97% */
+  --kved-danger: hsl(0, 63%, 51%);
+  --kved-danger-bg: hsl(0, 60%, 97%);
+  --kved-warn: hsl(38, 92%, 35%);
+  --kved-warn-bg: hsl(38, 100%, 97%);
+  --kved-border: hsl(var(--border));                 /* 214 32% 91% */
+  --kved-border-strong: hsl(215, 20%, 55%);
+  --kved-bg: hsl(var(--card));                       /* 0 0% 100% */
+  --kved-table-head: hsl(221, 60%, 30%);             /* derived from primary */
+  --kved-table-alt: hsl(var(--accent));              /* 221 83% 97% */
+  --kved-pad: 48px;
+  font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--kved-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.kved-article .page-wrap {
+  max-width: 56rem; /* max-w-4xl = 896px */
+  margin: 24px auto;
+  background: var(--kved-bg);
+  box-shadow: var(--shadow-card-elevated);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+
+/* Header — now light landing-style, styled via Tailwind in component */
+
+/* Meta row (date, badge, audience) */
+.kved-article .kved-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px var(--kved-pad) 0;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: hsl(var(--muted-foreground));
+}
+
+/* TOC */
+.kved-article .toc-title {
+  font-size: 11px; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase;
+  letter-spacing: .1em; font-weight: 700; color: var(--kved-accent); margin-bottom: 12px;
+}
+.kved-article .kved-toc-list {
+  padding-left: 18px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 4px 24px;
+  list-style: decimal;
+}
+.kved-article .kved-toc-list li { font-size: 13px; color: var(--kved-ink-light); }
+.kved-article .kved-toc-list a { color: var(--kved-accent-dark); text-decoration: none; }
+.kved-article .kved-toc-list a:hover { text-decoration: underline; }
+
+/* Intro — now uses Card component, styled via Tailwind */
+
+/* Content */
+.kved-article .content { padding: 0 var(--kved-pad); margin-top: 2rem; }
+
+/* Sections */
+.kved-article .section {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid hsl(var(--border) / 0.6);
+}
+.kved-article .section:first-child { border-top: none; padding-top: 0; }
+.kved-article .section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--kved-border);
+}
+/* section-num now uses Badge component */
+.kved-article .section h2 {
+  font-size: 1.375rem; font-weight: 700; color: var(--kved-ink);
+  letter-spacing: -.01em; line-height: 1.3;
+}
+.kved-article p { margin-bottom: 12px; color: var(--kved-ink-light); }
+.kved-article p:last-child { margin-bottom: 0; }
+.kved-article strong { color: var(--kved-ink); font-weight: 600; }
+.kved-article a { color: var(--kved-accent-dark); }
+.kved-article a.text-white { color: #fff; }
+.kved-article button a,
+.kved-article .bg-primary a,
+.kved-article a.bg-primary {
+  color: hsl(var(--primary-foreground));
+}
+
+/* Tables */
+/* (moved to line ~1806) */
+.kved-article table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.kved-article caption {
+  font-size: 11.5px; font-family: 'IBM Plex Mono', monospace; color: var(--kved-border-strong);
+  text-align: left; padding: 7px 14px;
+  background: hsl(var(--muted)); border-bottom: 1px solid var(--kved-border);
+  letter-spacing: .04em; caption-side: top;
+}
+.kved-article thead tr { background: var(--kved-table-head); color: #fff; }
+.kved-article thead th {
+  padding: 11px 14px; text-align: left; font-weight: 600;
+  font-size: 12.5px; letter-spacing: .02em; vertical-align: middle;
+}
+.kved-article tbody tr:nth-child(even) { background: var(--kved-table-alt); }
+.kved-article tbody tr:hover { background: hsl(var(--primary) / 0.08); transition: background .12s; }
+.kved-article tbody td {
+  padding: 11px 14px; border-bottom: 1px solid var(--kved-border);
+  vertical-align: top; line-height: 1.55; color: var(--kved-ink-light);
+}
+.kved-article tbody tr:last-child td { border-bottom: none; }
+.kved-article .col-strong td:first-child { color: var(--kved-ink); font-weight: 600; }
+.kved-article .code-ref {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+  color: var(--kved-accent-dark); background: var(--kved-accent-bg);
+  padding: 1px 6px; border-radius: 6px; white-space: nowrap;
+  border: 1px solid hsl(var(--primary) / 0.2);
+}
+a.code-ref {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, text-decoration 0.15s;
+}
+a.code-ref:hover {
+  text-decoration: underline;
+  background: hsl(var(--primary) / 0.12);
+  border-color: hsl(var(--primary) / 0.35);
+}
+
+/* Warning box — now uses Card component */
+
+/* Norms */
+.kved-article .norms-row {
+  background: hsl(var(--muted)); border: 1px solid var(--kved-border);
+  border-radius: var(--radius); padding: 11px 16px;
+  font-size: 12.5px; color: var(--kved-ink-light); margin-top: 12px; line-height: 1.7;
+}
+
+/* Step table */
+.kved-article .step-table td.step-num {
+  text-align: center; width: 48px; vertical-align: middle; padding: 12px 4px;
+  position: relative;
+}
+.kved-article .step-table td.step-num::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--kved-accent);
+  opacity: 0.25;
+  transform: translateX(-50%);
+}
+.kved-article .step-table tr:first-child td.step-num::before {
+  top: 50%;
+}
+.kved-article .step-table tr:last-child td.step-num::before {
+  bottom: 50%;
+}
+.kved-article .step-table td.step-num span {
+  position: relative;
+  z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--kved-accent); color: #fff;
+  font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700;
+}
+.kved-article .step-table td.step-action {
+  font-weight: 700; color: var(--kved-ink); width: 200px; vertical-align: top;
+}
+
+/* Colored table rows */
+.kved-article tbody tr.row--good { background: hsl(142 76% 36% / 0.08); }
+.kved-article tbody tr.row--good:hover { background: hsl(142 76% 36% / 0.14); }
+.kved-article tbody tr.row--bad { background: hsl(346 77% 50% / 0.08); }
+.kved-article tbody tr.row--bad:hover { background: hsl(346 77% 50% / 0.14); }
+
+.dark .kved-article tbody tr.row--good { background: hsl(142 76% 36% / 0.12); }
+.dark .kved-article tbody tr.row--good:hover { background: hsl(142 76% 36% / 0.20); }
+.dark .kved-article tbody tr.row--bad { background: hsl(346 77% 50% / 0.12); }
+.dark .kved-article tbody tr.row--bad:hover { background: hsl(346 77% 50% / 0.20); }
+
+/* Table caption */
+.kved-article table caption {
+  caption-side: top;
+  text-align: left;
+  font-size: var(--text-caption);
+  font-style: italic;
+  font-weight: 400;
+  color: hsl(var(--muted-foreground));
+  padding: 10px 14px;
+  background: hsl(var(--muted) / 0.45);
+  border-radius: 0 0 6px 6px;
+  border-top: 1px solid hsl(var(--border) / 0.5);
+  line-height: var(--leading-normal);
+  word-break: break-word;
+}
+
+/* Links block — now uses Card component */
+
+/* Error cards — now uses Card component */
+.kved-article .error-cards { display: grid; gap: 12px; margin-top: 16px; }
+
+/* Conclusion */
+.kved-article .conclusion {
+  margin: 44px 0 0;
+  background: hsl(var(--primary) / 0.05);
+  border: 1px solid hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground)); padding: 30px 40px; border-radius: var(--radius);
+}
+.kved-article .conclusion h2 {
+  font-size: 13px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: hsl(var(--primary));
+  font-family: 'IBM Plex Mono', monospace; margin-bottom: 20px;
+}
+.kved-article .do-steps { display: grid; gap: 10px; }
+.kved-article .do-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: hsl(var(--background)); padding: 14px 18px;
+  border-radius: calc(var(--radius) - 4px); border: 1px solid hsl(var(--border) / 0.5);
+  border-left: 3px solid hsl(var(--primary));
+}
+.kved-article .do-badge {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); padding: 3px 9px;
+  border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+}
+.kved-article .do-text { font-size: 14px; line-height: 1.6; color: hsl(var(--foreground)); }
+
+/* Late box — now uses Card component */
+
+/* Footer */
+.kved-article .doc-footer {
+  padding: 18px var(--kved-pad); border-top: 2px solid var(--kved-border);
+  margin-top: 44px; font-size: 12px; color: hsl(var(--muted-foreground));
+  display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; line-height: 1.8;
+}
+.kved-article .doc-footer .dot { color: var(--kved-border); }
+
+/* Section badge (auto-generated by markdown renderer for ## headings) */
+.kved-article .section-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 1px solid var(--kved-border);
+  border-radius: 9999px;
+  padding: 2px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Section spacing for markdown-rendered headings inside .content */
+.kved-article .content > .section-header {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid hsl(var(--border) / 0.6);
+}
+.kved-article .content > .section-header:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Enhanced container block styling within kved-article context */
+.kved-article .consultation-block {
+  margin: 20px 0;
+}
+.kved-article .consultation-block--intro {
+  background: hsl(var(--primary) / 0.05);
+  border: 1px solid hsl(var(--border));
+  border-left: 4px solid hsl(var(--primary));
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.kved-article .consultation-block--conclusion {
+  margin-top: 44px;
+  background: hsl(var(--primary) / 0.05);
+  border: 1px solid hsl(var(--primary) / 0.2);
+  border-left: none;
+  color: hsl(var(--foreground));
+  padding: 30px 40px;
+  border-radius: var(--radius);
+}
+.kved-article .consultation-block--error {
+  border-left: 4px solid hsl(0 84% 60%);
+  background: hsl(0 84% 60% / 0.04);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.kved-article .consultation-block--warning {
+  border: 1px solid hsl(38 92% 50% / 0.3);
+  border-left: 4px solid hsl(38 92% 50%);
+  background: hsl(38 92% 50% / 0.06);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.kved-article .consultation-block--instruction {
+  border: 1px solid hsl(var(--border));
+  border-left: 4px solid hsl(142 76% 36%);
+  background: hsl(142 76% 36% / 0.04);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.kved-article .consultation-block--legal {
+  border: 1px solid hsl(var(--border));
+  border-left: 4px solid hsl(215 14% 50%);
+  background: hsl(var(--muted) / 0.3);
+  border-radius: var(--radius);
+  font-size: 13px;
+  padding: 18px 20px;
+}
+.kved-article .consultation-block--checklist {
+  border: 1px solid hsl(142 76% 36% / 0.2);
+  border-left: 4px solid hsl(142 76% 36%);
+  background: hsl(142 76% 36% / 0.04);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+}
+.kved-article .consultation-block a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.kved-article .consultation-block li::marker {
+  color: inherit;
+}
+
+/* Responsive */
+@media (max-width: 660px) {
+  .kved-article { --kved-pad: 18px; }
+  .kved-article .kved-toc-list { grid-template-columns: 1fr; }
+  .kved-article .conclusion { padding: 24px 20px; }
+  .kved-article .do-step { flex-direction: column; gap: 6px; }
+  .kved-article thead th { font-size: 11.5px; padding: 8px 10px; }
+  .kved-article tbody td { padding: 9px 10px; font-size: 13px; }
+  .kved-article .doc-header h1 { font-size: 19px; }
+}
+
+/* Print */
+@media print {
+  .kved-article .page-wrap { box-shadow: none; border: 1px solid var(--kved-border); margin: 0; border-radius: 0; }
+  .kved-article .toc-block { display: none; }
+}
+
+/* Dark mode overrides */
+.dark .kved-article {
+  --kved-ink: hsl(var(--foreground));
+  --kved-ink-light: hsl(var(--muted-foreground));
+  --kved-accent: hsl(var(--primary));
+  --kved-accent-dark: hsl(221, 83%, 65%);
+  --kved-accent-bg: hsl(221, 40%, 15%);
+  --kved-danger-bg: hsl(0, 30%, 15%);
+  --kved-warn-bg: hsl(38, 30%, 15%);
+  --kved-border: hsl(var(--border));
+  --kved-border-strong: hsl(215, 20%, 50%);
+  --kved-bg: hsl(var(--card));
+  --kved-table-alt: hsl(221, 30%, 16%);
+  --kved-table-head: hsl(221, 60%, 25%);
+}
+.dark .kved-article .page-wrap {
+  box-shadow: var(--shadow-card-elevated);
+}
+
+.dark .kved-article .toc-title { color: hsl(217, 91%, 70%); }
+.dark .kved-article .kved-toc-list a { color: hsl(217, 91%, 70%); }
+.dark .kved-article caption { background: hsl(222, 40%, 12%); color: hsl(215, 20%, 65%); border-color: hsl(var(--border) / 0.5); }
+.dark .kved-article tbody tr:hover { background: hsl(221, 30%, 20%); }
+.dark .kved-article .norms-row { background: hsl(215, 20%, 15%); border-color: hsl(217, 33%, 22%); }
+.dark .kved-article .code-ref { background: hsl(221, 30%, 14%); border-color: hsl(221, 30%, 25%); color: hsl(217, 91%, 70%); }
+.dark .kved-article .doc-footer { border-color: var(--kved-border); color: hsl(215, 20%, 55%); }
+
+/* Relevance note */
+.kved-article .kved-relevance-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px var(--kved-pad);
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted) / 0.5);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* Progress bar — fixed top */
+.kved-progress-bar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Sticky TOC */
+.kved-article .kved-sticky-toc {
+  position: sticky;
+  top: 70px;
+  z-index: 40;
+  transition: box-shadow 0.2s ease;
+}
+
+/* TOC active item */
+.kved-article .kved-toc-list li.toc-active a {
+  color: var(--kved-accent);
+  font-weight: 700;
+}
+.kved-article .kved-toc-list li.toc-active {
+  color: var(--kved-ink);
+}
+
+/* H3 subheadings inside sections */
+.kved-article .section h3,
+.kved-article .content h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--kved-ink);
+  margin: 28px 0 8px;
+  letter-spacing: -0.01em;
+}
+
+/* Table breathing space */
+.kved-article .table-wrapper {
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  border: 1px solid var(--kved-border);
+  border-radius: var(--radius);
+  position: relative;
+}
+
+/* Scroll-hint fade for tables on mobile */
+@media (max-width: 660px) {
+  .kved-article .table-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 32px;
+    background: linear-gradient(to right, transparent, hsl(var(--card)) 80%);
+    pointer-events: none;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    opacity: 0.9;
+  }
+  .kved-article .table-wrapper:not(:hover)::after {
+    opacity: 0.9;
+  }
+  .kved-article .table-wrapper:hover::after,
+  .kved-article .table-wrapper:active::after {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .kved-article .table-wrapper caption {
+    word-break: break-word;
+  }
+}
+
+/* Dark mode scroll-hint */
+@media (max-width: 660px) {
+  .dark .kved-article .table-wrapper::after {
+    background: linear-gradient(to right, transparent, hsl(var(--card)) 80%);
+  }
+}
+
+/* Smooth scroll & section anchoring */
+html { scroll-behavior: smooth; }
+.kved-article .section-header { scroll-margin-top: 90px; }
+.kved-article h3 { scroll-margin-top: 90px; }
+
+/* ============================================
+   PROSE CALLOUT STYLES
+   For AI consultation answers
+   ============================================ */
+.prose-callouts blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  background: hsl(var(--primary) / 0.05);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-style: normal;
+}
+
+.prose-callouts blockquote p:first-child {
+  margin-top: 0;
+}
+
+.prose-callouts blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-callouts table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8125rem;
+}
+
+.prose-callouts table th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+}
+
+.prose-callouts table td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+}
+
+.prose-callouts table tr:nth-child(even) {
+  background: hsl(var(--muted) / 0.3);
+}
+
+.prose-callouts code:not(pre code) {
+  background: hsl(var(--muted));
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+.prose-callouts pre {
+  background: hsl(var(--muted));
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.prose-callouts a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: opacity 0.15s;
+}
+
+.prose-callouts a:hover {
+  opacity: 0.8;
+}
+
+/* ============================================
+   CONSULTATION ANSWER — CSS-only sections
+   ============================================ */
+
+/* Hero: first paragraph stands out */
+.prose-callouts > p:first-child {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: hsl(var(--foreground));
+}
+
+/* Section headers: bold text ending with ":" gets visual separator */
+.prose-callouts p > strong:first-child {
+  display: block;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid hsl(var(--border) / 0.4);
+  font-size: 0.875rem;
+}
+
+.prose-callouts > p:first-child > strong:first-child,
+.prose-callouts > div:first-child + p > strong:first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Lists: compact with accent markers */
+.prose-callouts ul,
+.prose-callouts ol {
+  padding-left: 1.25rem;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.prose-callouts li {
+  padding: 0.125rem 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: hsl(var(--foreground) / 0.9);
+}
+
+.prose-callouts li::marker {
+  color: hsl(var(--primary));
+}
+
+/* Dark mode refinements */
+.dark .prose-callouts > p:first-child {
+  color: hsl(var(--foreground) / 0.95);
+}
+
+.dark .prose-callouts p > strong:first-child {
+  border-top-color: hsl(var(--border) / 0.6);
+}
+
+.dark .prose-callouts li {
+  color: hsl(var(--foreground) / 0.95);
+}

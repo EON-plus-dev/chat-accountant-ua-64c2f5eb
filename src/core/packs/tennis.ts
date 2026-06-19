@@ -1,0 +1,76 @@
+import type { VerticalPack } from "../verticalPack";
+
+export const tennisPack: VerticalPack = {
+  id: "tennis_club",
+  displayName: "Тенісний клуб",
+  labels: {
+    resourcePlural: "Корти",
+    resourceSingular: "Корт",
+    staffPlural: "Тренери",
+    staffSingular: "Тренер",
+    bookingSingular: "Бронювання корту",
+    bookingPlural: "Бронювання",
+    serviceSingular: "Тренування",
+    servicePlural: "Тренування та оренда",
+    clientSingular: "Клієнт",
+  },
+  bookings: {
+    resourceKind: "court",
+    defaultDurationMin: 60,
+    supportsDateRange: false,
+    capacityPerSlot: 4,
+    requiresStaff: false,
+  },
+  bookingRules: {
+    allowedDurationsMin: [60, 90, 120],
+    leadHours: 2,
+    horizonDays: 14,
+    maxActivePerPhone: 3,
+    requiresDeposit: false,
+    softHoldMin: 15,
+  },
+  defaults: {
+    staffCommissionPct: 40,
+    fopCommissionPct: 55,
+    cashbackPct: 5,
+    noShowThreshold: 2,
+    serviceCategories: [
+      { id: "court_rent", label: "Оренда корту" },
+      { id: "training", label: "Індивідуальне тренування" },
+      { id: "group_class", label: "Груповий клас" },
+      { id: "junior", label: "Юніори" },
+      { id: "corporate", label: "Корпоратив" },
+    ],
+    recommendedIntegrations: ["prro-master", "telegram-bot", "google-calendar", "ical-feed"],
+  },
+  settings: {
+    sections: [
+      "general",
+      "workstations",
+      "masters",
+      "services",
+      "schedule",
+      "memberships",
+      "loyalty",
+      "payouts",
+    ],
+    hidden: ["channels"],
+  },
+  settingsNav: {
+    title: "Клуб",
+    subtitle:
+      "Налаштування тенісного клубу: корти, тренери, абонементи, прайс тренувань і правила винагород. Бронювання кортів і Pro Shop використовують ці дані.",
+    overrides: {
+      workstations: { label: "Корти", description: "Покриття, ставка/година, indoor/outdoor" },
+      masters: { label: "Тренери і ставки", description: "Команда клубу" },
+      delegations: { label: "Делегації тренерів", description: "Договори, доступи, запрошення" },
+      services: { label: "Тренування та прайс", description: "Каталог тренувань і оренди" },
+      categories: { label: "Абонементи і пакети", description: "Групи, абонементи, корпоративи" },
+      hours: { label: "Розклад роботи клубу", description: "Години клубу" },
+      clients: { label: "Гості й лояльність", description: "Картка, рейтинг, сегменти" },
+      "online-booking": { label: "Онлайн-бронювання кортів", description: "Публічний віджет" },
+      reminders: { label: "Нагадування гостям", description: "SMS, Viber, Telegram" },
+      integrations: { label: "Інтеграції клубу", description: "ПРРО, боти, Google Calendar" },
+    },
+  },
+};

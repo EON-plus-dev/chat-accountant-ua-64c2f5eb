@@ -1,0 +1,10 @@
+export { FixedAssetDetailPage } from "./FixedAssetDetailPage";
+export { FixedAssetInfoTab } from "./FixedAssetInfoTab";
+export { FixedAssetDepreciationTab } from "./FixedAssetDepreciationTab";
+export { FixedAssetDocumentsTab } from "./FixedAssetDocumentsTab";
+export { FixedAssetHistoryTab } from "./FixedAssetHistoryTab";
+export { AddFixedAssetSheet } from "./AddFixedAssetSheet";
+export { EditFixedAssetSheet } from "./EditFixedAssetSheet";
+export { WriteOffDialog } from "./WriteOffDialog";
+export { SaleDialog } from "./SaleDialog";
+export { InventorySheet } from "./InventorySheet";

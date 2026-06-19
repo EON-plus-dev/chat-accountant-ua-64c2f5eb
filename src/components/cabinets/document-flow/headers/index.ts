@@ -1,0 +1,1 @@
+export { DocumentDetailHeader } from "./DocumentDetailHeader";

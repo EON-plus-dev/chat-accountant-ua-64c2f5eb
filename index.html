@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="uk" class="" suppressHydrationWarning>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Бухгалтер | FINTODO</title>
+    <meta name="description" content="AI-бухгалтер для ФОП та фізосіб в Україні. Автоматичні декларації, податковий календар, AI-консультації — усе через чат." />
+    <meta name="author" content="FINTODO" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://fintodo.com.ua/" />
+    <link rel="alternate" hreflang="uk" href="https://fintodo.com.ua/" />
+
+    <meta property="og:title" content="AI-Бухгалтер | FINTODO" />
+    <meta property="og:description" content="AI-бухгалтер для ФОП та фізосіб в Україні. Автоматичні декларації, податковий календар, AI-консультації — усе через чат." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://fintodo.com.ua/og-default.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://fintodo.com.ua/og-default.png" />
+
+    <!-- Inter Font - Primary FinTech Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script
+      defer
+      data-domain="fintodo.com.ua"
+      src="https://plausible.io/js/script.tagged-events.js"
+    ></script>
+    <script>
+      (function () {
+        try {
+          var v = localStorage.getItem('fintodo:font-size');
+          var map = { sm: '14px', base: '16px', lg: '18px', xl: '20px' };
+          if (v && map[v]) document.documentElement.style.fontSize = map[v];
+        } catch (e) {}
+      })();
+    </script>
+    <!-- CMS iframe bridge: дозволяє адмінці ловити виділення тексту й Alt+клік на блок -->
+    <script>
+      (function () {
+        if (window.self === window.top) return;
+        var allow = /^https:\/\/(id-preview--[^.]+\.lovable\.app|[^.]+\.lovable\.dev|chat-accountant-ua\.lovable\.app)$|^http:\/\/localhost(:\d+)?$/;
+        var parentOrigin = null;
+        function send(p) { if (parentOrigin) try { window.parent.postMessage(p, parentOrigin); } catch (e) {} }
+        window.addEventListener('message', function (e) {
+          if (!e.data || e.data.type !== 'cms:handshake') return;
+          if (!allow.test(e.origin)) return;
+          parentOrigin = e.origin;
+          send({ type: 'cms:ready', path: location.pathname });
+        });
+        document.addEventListener('mouseup', function () {
+          setTimeout(function () {
+            var sel = window.getSelection();
+            if (!sel || sel.isCollapsed) { send({ type: 'cms:selection', text: '' }); return; }
+            var text = sel.toString().trim();
+            if (text.length < 2) { send({ type: 'cms:selection', text: '' }); return; }
+            var r = sel.getRangeAt(0).getBoundingClientRect();
+            send({ type: 'cms:selection', text: text, rect: { x: r.x, y: r.y, w: r.width, h: r.height }, path: location.pathname });
+          }, 0);
+        });
+        var hovered = null;
+        document.addEventListener('mousemove', function (e) {
+          if (!e.altKey) { if (hovered) { hovered.style.outline = ''; hovered = null; } return; }
+          var el = e.target && e.target.closest && e.target.closest('section,article,header,footer,nav,main,aside,[data-cms-block]');
+          if (el === hovered) return;
+          if (hovered) hovered.style.outline = '';
+          hovered = el;
+          if (hovered) { hovered.style.outline = '2px solid hsl(217 91% 60%)'; hovered.style.outlineOffset = '-2px'; }
+        });
+        document.addEventListener('click', function (e) {
+          if (!e.altKey) return;
+          var el = e.target && e.target.closest && e.target.closest('section,article,header,footer,nav,main,aside,[data-cms-block]');
+          if (!el) return;
+          e.preventDefault();
+          e.stopPropagation();
+          send({
+            type: 'cms:block-pick',
+            blockId: el.getAttribute('data-cms-block') || (el.tagName.toLowerCase() + (el.id ? '#' + el.id : '')),
+            text: (el.innerText || '').slice(0, 800),
+            path: location.pathname,
+          });
+        }, true);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
